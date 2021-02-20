@@ -10,6 +10,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
+from tensorflow.keras.optimizers import Adam
 
 config = ConfigProto()
 config.gpu_options.allow_growth = True
@@ -23,20 +24,27 @@ batch_size = 8
 train_generator = DataGenerator(
     train_list,
     batch_size=batch_size,
-    horizontal_flip=True,
-    vertical_flip=True,
-    seg=True
+    # horizontal_flip=True,
+    # vertical_flip=True,
+    seg=True,
+    rotation_range=90,
+    #rescale=0.5,
+    # zoom_range=0.2,
+    #shear_range=0.5,
+    # width_shift_range=2,
+    # height_shift_range=2,
 )
 validation_generator = DataGenerator(val_list, batch_size=batch_size, seg=True)
 IMG_SIZE = (240, 240)
 
 
-# TODO: change model (originally unet)
-model = unet_plus_plus()
+# TODO: changeodel (originally unet)
+model = unet_3p()
+
 model.summary()
 
 # train model
-num_epochs = 25
+num_epochs = 110
 history = model.fit(
     train_generator,
     epochs=num_epochs,
